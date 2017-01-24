@@ -128,6 +128,13 @@ time.sleep(.2)
 
 
 
+
+
+
+
+
+
+
 ##### Le module OS #####
 
 ### os.getcwd####
@@ -175,6 +182,71 @@ print
 print "- Suppression du dossier 'temp'"
 # Le dossier doit etre vide!
 os.rmdir('temp') 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Le module os.path #####
+
+
+###  os.path.expanduser   ###
+userpath = os.path.expanduser("~")
+
+### Creation de paths, par concatenation, avec os.path.join  ###
+temppath = os.path.join(userpath, "temp")
+tempfile = os.path.join(temppath, "tempfile.txt")
+
+print "\n- Repertoire utilisateur:", userpath
+
+###   os.path.isdir   ####
+print "\n- Teste la presence d'un dossier '%s'" % temppath
+exist = os.path.isdir(temppath)
+
+if not exist:
+    print "\n- Creation du dossier '%s'" % temppath
+    os.mkdir(temppath)
+
+####   os.path.isfile   ####    
+print "\n- Teste la presence d'un fichier '%s'" % tempfile
+exist = os.path.isfile(tempfile)
+
+if not exist:
+    print "\n- Creation du fichier '%s'" % tempfile
+    f = open(tempfile, "w")
+    f.write("* Ceci est le contenu du fichier tempfile.txt! *")
+    f.close()
+    
+print "\n- Lecture du fichier '%s'\n" % tempfile
+
+f = open(tempfile, "r")
+print f.read()
+f.close()
+
+###   os.path.split separe la base (path du dossier) du nom du fichier   ###
+sppath = os.path.split(tempfile)
+print "\n- Path de base du fichier:", sppath[0]
+print "- Nom du fichier:", sppath[1]
+
+# os.path.splitext separe le path du fichier de l'extension
+spext = os.path.splitext(tempfile)
+print "\n- Extension du fichier:", spext[1]
+
+print "\n- Suppression du fichier '%s'" % tempfile
+os.remove(tempfile)
+
+print "\n- Suppression du dossier '%s'" % temppath
+os.rmdir(temppath)
+
 
 
 
