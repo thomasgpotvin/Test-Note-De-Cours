@@ -5,7 +5,7 @@
 ##    Le module sys    ##
 
 
-import sys, time
+import sys, time, os
 from pyo import *
 
 
@@ -45,19 +45,20 @@ if len(args) < 2:
     print "Erreur : nombre d'arguments insuffisants !"
     print "Les frequences des oscillateurs doivent etre donnees en arguments."
     print "Usage :python 02_sys_argv.py freq1 freq2 freq3 ... \n"
-    exit()
 
-s = Server(duplex=0).boot()
+else : 
 
-print "Execution du script %s" % args[0]
+    s = Server(duplex=0).boot()
 
-del args[0]
-num = len(args)
-freqs = [float(x) for x in args]
+    print "Execution du script %s" % args[0]
 
-a = Sine(freq=freqs, mul=0.5/num).out()
+    del args[0]
+    num = len(args)
+    freqs = [float(x) for x in args]
 
-s.gui(locals())
+    a = Sine(freq=freqs, mul=0.5/num).out()
+
+    s.gui(locals())
 
 
 
@@ -75,7 +76,7 @@ def usage():
     
 if "-h" in sys.argv:
     usage()
-    exit()
+   
     
 loop = False
 if "-l" in sys.argv:
@@ -92,7 +93,7 @@ if "-j" in sys.argv:
 if len(sys.argv) < 2:
     print "\nNot enough arguments."
     usage()
-    exit()
+    
 
 s = Server(audio=audio).boot()
 if not serverBooted():
@@ -123,6 +124,57 @@ for snd in sys.argv[1:]:
         continue
 s.stop()
 time.sleep(.2)
+
+
+
+
+##### Le module OS #####
+
+### os.getcwd####
+print "\n- Repertoire courant:", os.getcwd()
+
+
+### os.mkdir###
+print "\n- Creation d'un dossier 'temp' dans le repertoire courant"
+# mkdir retourne une erreur si le dossier existe deja.
+os.mkdir("temp")
+
+
+### os.chdir###
+print "\n- Changement de repertoire courant"
+os.chdir('temp') 
+
+
+###  création de fichier  ####
+print "\n- Creation de fichiers..."
+for i in range(4):
+    f = open("tmpfile-%d.txt" % i, "w")
+    f.close()
+
+###   os.getcwd   (encore) ##
+print "\n- Repertoire courant:", os.getcwd()
+
+print "\n- Liste des fichiers contenus dans le repertoire courant:\n"
+
+###   os.listdir (dans le dossier courant) ###
+filelist = os.listdir(os.getcwd())
+print filelist
+
+###    os.remove ####
+print "\n- Suppresssion des fichiers"
+for i in range(4):
+    os.remove("tmpfile-%d.txt" % i)
+    
+#### os.chdir (encore) ###
+print "\n- Changement de repertoire courant (retour en arriere d'un niveau)"
+os.chdir('..')
+
+
+### os.rmdir ######
+print
+print "- Suppression du dossier 'temp'"
+# Le dossier doit etre vide!
+os.rmdir('temp') 
 
 
 
